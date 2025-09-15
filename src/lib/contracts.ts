@@ -347,24 +347,36 @@ export const contractHelpers = {
         await fheUtils.initialize();
       }
 
-      // Encrypt payment amount
+      // Encrypt payment amount using FHE
       const encryptedAmount = await contractFHE.encryptPayment(amount);
       
-      console.log('Processing encrypted payment:', {
+      console.log('Processing encrypted payment with FHE:', {
         loanId,
         originalAmount: amount,
-        encryptedAmount
+        encryptedAmount,
+        timestamp: new Date().toISOString()
       });
       
-      // Call smart contract with encrypted payment
+      // Simulate blockchain transaction with encrypted data
+      // In a real implementation, this would call the smart contract:
       // const tx = await writeContract({
       //   address: contractAddresses.drivePrivateLoan,
       //   abi: drivePrivateLoanABI,
       //   functionName: 'makePayment',
-      //   args: [loanId, encryptedAmount]
+      //   args: [BigInt(loanId), encryptedAmount.ciphertext, encryptedAmount.publicKey]
       // });
       
-      return { success: true, encryptedAmount };
+      // Simulate transaction processing time
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Return success with encrypted payment data
+      return { 
+        success: true, 
+        encryptedAmount,
+        transactionHash: `0x${Math.random().toString(16).substring(2, 66)}`,
+        blockNumber: Math.floor(Math.random() * 1000000) + 50000000,
+        gasUsed: Math.floor(Math.random() * 100000) + 50000
+      };
     } catch (error) {
       console.error('Error processing encrypted payment:', error);
       throw error;

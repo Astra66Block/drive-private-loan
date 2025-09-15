@@ -20,6 +20,8 @@ import {
   Lock
 } from "lucide-react";
 import { useState } from "react";
+import { MakePaymentModal } from "./MakePaymentModal";
+import { PaymentHistory } from "./PaymentHistory";
 
 interface ViewFinancingModalProps {
   isOpen: boolean;
@@ -40,6 +42,7 @@ interface ViewFinancingModalProps {
 
 export function ViewFinancingModal({ isOpen, onClose, vehicle }: ViewFinancingModalProps) {
   const [showPrivateData, setShowPrivateData] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const loanData = {
     totalLoan: vehicle.price * 0.85, // Assuming 15% down payment
@@ -50,6 +53,64 @@ export function ViewFinancingModal({ isOpen, onClose, vehicle }: ViewFinancingMo
     tokenAppreciation: 8.5,
     totalTokens: (vehicle.price * 0.85) / 50 // $50 per token
   };
+
+  // Mock payment history with encrypted data
+  const paymentHistory = [
+    {
+      id: "001",
+      amount: "850.00",
+      date: "2024-09-15T10:30:00Z",
+      status: "completed" as const,
+      transactionHash: "0x1234567890abcdef1234567890abcdef12345678",
+      blockNumber: 50000001,
+      gasUsed: 75000,
+      encryptedData: {
+        ciphertext: "fhe_ct_850_1694778600000_abc123",
+        publicKey: "fhe_pub_key_1694778600000",
+        metadata: {
+          algorithm: "FHE-BFV",
+          timestamp: 1694778600000,
+          dataType: "payment_amount"
+        }
+      }
+    },
+    {
+      id: "002",
+      amount: "850.00",
+      date: "2024-08-15T10:30:00Z",
+      status: "completed" as const,
+      transactionHash: "0x2345678901bcdef1234567890abcdef123456789",
+      blockNumber: 49950001,
+      gasUsed: 72000,
+      encryptedData: {
+        ciphertext: "fhe_ct_850_1692096600000_def456",
+        publicKey: "fhe_pub_key_1692096600000",
+        metadata: {
+          algorithm: "FHE-BFV",
+          timestamp: 1692096600000,
+          dataType: "payment_amount"
+        }
+      }
+    },
+    {
+      id: "003",
+      amount: "850.00",
+      date: "2024-07-15T10:30:00Z",
+      status: "completed" as const,
+      transactionHash: "0x3456789012cdef1234567890abcdef1234567890",
+      blockNumber: 49900001,
+      gasUsed: 71000,
+      encryptedData: {
+        ciphertext: "fhe_ct_850_1689414600000_ghi789",
+        publicKey: "fhe_pub_key_1689414600000",
+        metadata: {
+          algorithm: "FHE-BFV",
+          timestamp: 1689414600000,
+          dataType: "payment_amount"
+        }
+      }
+    }
+  ];
 
   const paymentProgress = (loanData.paidAmount / loanData.totalLoan) * 100;
 
@@ -177,32 +238,16 @@ export function ViewFinancingModal({ isOpen, onClose, vehicle }: ViewFinancingMo
           <TabsContent value="payments" className="space-y-6">
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-semibold">Payment History</h3>
-              <Button className="bg-gradient-primary">
+              <Button 
+                className="bg-gradient-primary"
+                onClick={() => setShowPaymentModal(true)}
+              >
                 <CreditCard className="w-4 h-4 mr-2" />
                 Make Payment
               </Button>
             </div>
 
-            <Card className="p-6 bg-card-premium border-border">
-              <div className="space-y-4">
-                {[1, 2, 3, 4, 5].map((payment) => (
-                  <div key={payment} className="flex items-center justify-between p-4 bg-surface rounded-lg border">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-success rounded-full"></div>
-                      <div>
-                        <p className="font-medium">Payment #{payment}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {new Date(Date.now() - payment * 30 * 24 * 60 * 60 * 1000).toLocaleDateString()}
-                        </p>
-                      </div>
-                    </div>
-                    <span className="font-semibold">
-                      {showPrivateData ? `$${vehicle.loanTerms.monthlyPayment}` : "$•••"}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </Card>
+            <PaymentHistory payments={paymentHistory} />
           </TabsContent>
 
           <TabsContent value="tokens" className="space-y-6">
@@ -293,13 +338,24 @@ export function ViewFinancingModal({ isOpen, onClose, vehicle }: ViewFinancingMo
               <Settings className="w-4 h-4 mr-2" />
               Settings
             </Button>
-            <Button className="bg-gradient-primary">
+            <Button 
+              className="bg-gradient-primary"
+              onClick={() => setShowPaymentModal(true)}
+            >
               <CreditCard className="w-4 h-4 mr-2" />
               Make Payment
             </Button>
           </div>
         </div>
       </DialogContent>
+      
+      {/* Make Payment Modal */}
+      <MakePaymentModal
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        loanId={1} // This would come from the actual loan data
+        vehicle={vehicle}
+      />
     </Dialog>
   );
 }
