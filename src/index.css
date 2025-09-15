@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Automotive Finance Design System - Premium RWA Vehicle Financing */
+
+@layer base {
+  :root {
+    /* Core Automotive Colors */
+    --background: 220 15% 8%;
+    --foreground: 210 40% 98%;
+    --surface: 220 13% 12%;
+    --surface-elevated: 220 13% 16%;
+
+    /* Card System */
+    --card: 220 13% 12%;
+    --card-foreground: 210 40% 98%;
+    --card-premium: 220 13% 16%;
+
+    /* Interactive Elements */
+    --primary: 210 100% 56%;
+    --primary-foreground: 220 15% 8%;
+    --primary-glow: 210 100% 65%;
+    
+    /* Premium Accents */
+    --secondary: 25 95% 58%;
+    --secondary-foreground: 220 15% 8%;
+    --accent: 25 95% 68%;
+    --accent-foreground: 220 15% 8%;
+
+    /* Muted Tones */
+    --muted: 220 13% 20%;
+    --muted-foreground: 210 20% 65%;
+
+    /* Status Colors */
+    --success: 142 76% 36%;
+    --success-foreground: 210 40% 98%;
+    --warning: 43 96% 56%;
+    --warning-foreground: 220 15% 8%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* UI Elements */
+    --border: 220 13% 20%;
+    --input: 220 13% 16%;
+    --ring: 210 100% 56%;
+
+    /* Design System Tokens */
+    --radius: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.25rem;
+
+    /* Premium Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(210 100% 56%), hsl(210 100% 65%));
+    --gradient-secondary: linear-gradient(135deg, hsl(25 95% 58%), hsl(25 95% 68%));
+    --gradient-surface: linear-gradient(135deg, hsl(220 13% 12%), hsl(220 13% 16%));
+    --gradient-hero: linear-gradient(135deg, hsl(220 15% 8%) 0%, hsl(220 13% 12%) 50%, hsl(220 13% 16%) 100%);
+
+    /* Shadows & Glows */
+    --shadow-premium: 0 20px 40px -10px hsl(220 13% 5% / 0.6);
+    --shadow-glow-primary: 0 0 30px hsl(210 100% 56% / 0.3);
+    --shadow-glow-secondary: 0 0 30px hsl(25 95% 58% / 0.3);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .dark {
+    /* Dark theme uses same values for this automotive app */
+    --background: 220 15% 8%;
+    --foreground: 210 40% 98%;
+    --surface: 220 13% 12%;
+    --surface-elevated: 220 13% 16%;
+    --card: 220 13% 12%;
+    --card-foreground: 210 40% 98%;
+    --card-premium: 220 13% 16%;
+    --primary: 210 100% 56%;
+    --primary-foreground: 220 15% 8%;
+    --primary-glow: 210 100% 65%;
+    --secondary: 25 95% 58%;
+    --secondary-foreground: 220 15% 8%;
+    --accent: 25 95% 68%;
+    --accent-foreground: 220 15% 8%;
+    --muted: 220 13% 20%;
+    --muted-foreground: 210 20% 65%;
+    --success: 142 76% 36%;
+    --success-foreground: 210 40% 98%;
+    --warning: 43 96% 56%;
+    --warning-foreground: 220 15% 8%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 13% 20%;
+    --input: 220 13% 16%;
+    --ring: 210 100% 56%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
