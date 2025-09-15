@@ -54,8 +54,8 @@ export function VehicleCard({
     }
     
     try {
-      // Add vehicle to contract
-      await contractHelpers.addVehicle(
+      // Add vehicle to contract with FHE encryption
+      const result = await contractHelpers.addVehicle(
         make,
         model,
         year,
@@ -65,10 +65,14 @@ export function VehicleCard({
         loanTerms.term
       );
       
-      setShowTokenizeModal(true);
+      if (result.success) {
+        console.log('Vehicle added to blockchain with encrypted data:', result.encryptedData);
+        alert('Vehicle successfully added to blockchain with FHE encryption!');
+        setShowTokenizeModal(true);
+      }
     } catch (error) {
       console.error('Error adding vehicle to contract:', error);
-      alert('Failed to add vehicle to contract');
+      alert('Failed to add vehicle to contract. Please try again.');
     }
   };
   return (

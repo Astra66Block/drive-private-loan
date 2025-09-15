@@ -8,7 +8,7 @@
       <stop offset="0%" style="stop-color:#1e293b;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#0f172a;stop-opacity:1" />
     </linearGradient>
-    <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="lockGradient" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
     </linearGradient>
@@ -27,9 +27,11 @@
   <circle cx="11" cy="22" r="2" fill="#374151"/>
   <circle cx="21" cy="22" r="2" fill="#374151"/>
   
-  <!-- Shield overlay for FHE -->
-  <path d="M16 6L20 9V15C20 18 16 24 16 24S12 18 12 15V9L16 6Z" fill="url(#shieldGradient)" opacity="0.8"/>
+  <!-- Lock icon for privacy -->
+  <rect x="14" y="6" width="4" height="6" rx="1" fill="url(#lockGradient)"/>
+  <path d="M15 6V4C15 2.5 15.5 2 16 2S17 2.5 17 4V6" stroke="url(#lockGradient)" stroke-width="1" fill="none"/>
   
-  <!-- FHE text -->
-  <text x="16" y="18" font-family="Arial, sans-serif" font-size="5" font-weight="bold" text-anchor="middle" fill="white">FHE</text>
+  <!-- Privacy dots -->
+  <circle cx="12" cy="8" r="0.5" fill="url(#lockGradient)"/>
+  <circle cx="20" cy="8" r="0.5" fill="url(#lockGradient)"/>
 </svg>

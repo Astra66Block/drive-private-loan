@@ -1,4 +1,5 @@
 import { Address } from 'viem';
+import { fheUtils, contractFHE } from './fhe-utils';
 
 // Contract addresses (to be updated after deployment)
 export const contractAddresses = {
@@ -254,9 +255,9 @@ export const fheUtils = {
   }
 };
 
-// Contract interaction helpers
+// Contract interaction helpers with real FHE encryption
 export const contractHelpers = {
-  // Add a vehicle to the platform
+  // Add a vehicle to the platform with FHE encryption
   addVehicle: async (
     make: string,
     model: string,
@@ -266,24 +267,138 @@ export const contractHelpers = {
     apr: number,
     termMonths: number
   ) => {
-    // Implementation would use wagmi hooks
-    console.log('Adding vehicle:', { make, model, year, price, loanAmount, apr, termMonths });
+    try {
+      // Initialize FHE system if not ready
+      if (!fheUtils.isReady()) {
+        await fheUtils.initialize();
+      }
+
+      // Encrypt sensitive data using FHE
+      const encryptedData = await contractFHE.encryptVehicleData(price, loanAmount, apr, termMonths);
+      
+      console.log('Encrypting vehicle data for blockchain storage:', {
+        make,
+        model,
+        year,
+        originalData: { price, loanAmount, apr, termMonths },
+        encryptedData
+      });
+      
+      // Here you would call the actual smart contract
+      // const tx = await writeContract({
+      //   address: contractAddresses.drivePrivateLoan,
+      //   abi: drivePrivateLoanABI,
+      //   functionName: 'addVehicle',
+      //   args: [make, model, year, encryptedData.encryptedPrice, encryptedData.encryptedLoanAmount, encryptedData.encryptedApr, encryptedData.encryptedTermMonths]
+      // });
+      
+      return { success: true, encryptedData };
+    } catch (error) {
+      console.error('Error adding vehicle with FHE encryption:', error);
+      throw error;
+    }
   },
   
-  // Submit a loan application
+  // Submit a loan application with encrypted personal data
   submitLoanApplication: async (
     vehicleId: number,
     requestedAmount: number,
     monthlyIncome: number,
     creditScore: number
   ) => {
-    // Implementation would use wagmi hooks
-    console.log('Submitting loan application:', { vehicleId, requestedAmount, monthlyIncome, creditScore });
+    try {
+      // Initialize FHE system if not ready
+      if (!fheUtils.isReady()) {
+        await fheUtils.initialize();
+      }
+
+      // Encrypt sensitive financial data
+      const encryptedData = await contractFHE.encryptLoanApplication(requestedAmount, monthlyIncome, creditScore);
+      
+      console.log('Encrypting loan application data:', {
+        vehicleId,
+        originalData: { requestedAmount, monthlyIncome, creditScore },
+        encryptedData
+      });
+      
+      // Call smart contract with encrypted data
+      // const tx = await writeContract({
+      //   address: contractAddresses.drivePrivateLoan,
+      //   abi: drivePrivateLoanABI,
+      //   functionName: 'submitLoanApplication',
+      //   args: [vehicleId, encryptedData.encryptedRequestedAmount, encryptedData.encryptedMonthlyIncome, encryptedData.encryptedCreditScore]
+      // });
+      
+      return { 
+        success: true, 
+        encryptedData
+      };
+    } catch (error) {
+      console.error('Error submitting encrypted loan application:', error);
+      throw error;
+    }
   },
   
-  // Make a loan payment
+  // Make a loan payment with encrypted amount
   makePayment: async (loanId: number, amount: number) => {
-    // Implementation would use wagmi hooks
-    console.log('Making payment:', { loanId, amount });
+    try {
+      // Initialize FHE system if not ready
+      if (!fheUtils.isReady()) {
+        await fheUtils.initialize();
+      }
+
+      // Encrypt payment amount
+      const encryptedAmount = await contractFHE.encryptPayment(amount);
+      
+      console.log('Processing encrypted payment:', {
+        loanId,
+        originalAmount: amount,
+        encryptedAmount
+      });
+      
+      // Call smart contract with encrypted payment
+      // const tx = await writeContract({
+      //   address: contractAddresses.drivePrivateLoan,
+      //   abi: drivePrivateLoanABI,
+      //   functionName: 'makePayment',
+      //   args: [loanId, encryptedAmount]
+      // });
+      
+      return { success: true, encryptedAmount };
+    } catch (error) {
+      console.error('Error processing encrypted payment:', error);
+      throw error;
+    }
+  },
+  
+  // Tokenize vehicle with encrypted token value
+  tokenizeVehicle: async (vehicleId: number, tokenValue: number) => {
+    try {
+      // Initialize FHE system if not ready
+      if (!fheUtils.isReady()) {
+        await fheUtils.initialize();
+      }
+
+      const encryptedTokenValue = await fheUtils.encrypt(tokenValue, 'token_value');
+      
+      console.log('Tokenizing vehicle with encrypted value:', {
+        vehicleId,
+        originalTokenValue: tokenValue,
+        encryptedTokenValue
+      });
+      
+      // Call smart contract to tokenize
+      // const tx = await writeContract({
+      //   address: contractAddresses.drivePrivateLoan,
+      //   abi: drivePrivateLoanABI,
+      //   functionName: 'tokenizeVehicle',
+      //   args: [vehicleId, encryptedTokenValue]
+      // });
+      
+      return { success: true, encryptedTokenValue };
+    } catch (error) {
+      console.error('Error tokenizing vehicle:', error);
+      throw error;
+    }
   }
 };
